@@ -28,10 +28,10 @@ FLEX_TARGET(
 ADD_FLEX_BISON_DEPENDENCY(Lexer Parser)
 
 add_executable(
-    02-ParserExample
+    Run
     ${SOURCE_DIR}/main.cpp
-    ${SOURCE_DIR}/driver.cpp
+    ${SOURCE_DIR}/AST.cpp
     ${BISON_OUTPUTS}
     ${FLEX_OUTPUTS}
 )
-target_include_directories(02-ParserExample PRIVATE ${SOURCE_DIR})
+target_include_directories(Run PRIVATE ${SOURCE_DIR})

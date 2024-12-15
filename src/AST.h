@@ -1,14 +1,33 @@
 #include <cstring>
-#include <string>
+#include <algorithm>
 
 enum class Operator {
-
+    PLUS,
+    MINUS,
+    MUL,
+    DIV,
+    EQUATE,
+    IS_EQ,
+    IS_NOT_EQ,
+    IS_GE,
+    IS_LE,
+    IS_G,
+    IS_L,
 };
 
 enum class Keyword {
-
+    PROGRAM,
+    BEGIN,
+    END,
+    VAR,
+    IF,
+    THEN,
+    ELSE,
+    FOR,
+    TO,
+    DO,
+    WHILE,
 };
-
 
 enum class NodeType {
     SYM,
@@ -20,56 +39,33 @@ enum class NodeType {
 };
 
 union NodeValue {
-    // Operator oper;
-    // Keyword keyword;
+    Operator oper;
+    Keyword keyword;
     int num;
-    // char sym;
-    std::string var;
+    char* var;
+    char sym;
 };
 
 struct Node {
 
+    Node(const Node& other);
+    Node(Node&& other);
 
-    Node(Node* left = nullptr, Node* right = nullptr):
-    left_  (left),
-    right_ (right),
-    type_  (NodeType::FICT) { }
+    Node& operator=(Node& other);
+    Node& operator=(Node&& other);
 
-    Node(int num, Node* left = nullptr, Node* right = nullptr):
-    left_  (left),
-    right_ (right),
-    type_  (NodeType::NUM),
-    val_   () { }
+    void moveVar(Node&& other);
 
-    Node(const char* var, Node* left, Node* right):
-    left_  (left),
-    right_ (right),
-    type_  (NodeType::VAR) { 
-        copyVar(var);
-    }
+    void copyVar(const char* var);
 
-    Node(char sym, Node* left, Node* right):
-    left_  (left),
-    right_ (right),
-    type_  (NodeType::SYM),
-    val_    ({.sym = sym}) { }
+    Node(Node* left = nullptr, Node* right = nullptr);
+    Node(int num, Node* left = nullptr, Node* right = nullptr);
+    Node(const char* var, Node* left, Node* right);
+    Node(char sym, Node* left, Node* right);
+    Node(Operator oper, Node* left = nullptr, Node* right = nullptr);
+    Node(Keyword keyword, Node* left = nullptr, Node* right = nullptr);
 
-    Node(Operator oper, Node* left = nullptr, Node* right = nullptr):
-    left_  (left),
-    right_ (right),
-    type_  (NodeType::NUM),
-    val_   ({.oper = oper}) { }
-
-    Node(Keyword keyword, Node* left = nullptr, Node* right = nullptr):
-    left_  (left),
-    right_ (right),
-    type_  (NodeType::NUM),
-    val_   ({.keyword = keyword}) { }
-
-    ~Node() {
-        if (type_ == NodeType::VAR)
-            delete[] val_.var;
-    }
+    ~Node();
 
     NodeType type_;
     NodeValue val_;
