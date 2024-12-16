@@ -1,23 +1,64 @@
+
+#include "AST.hpp"
+#include "Lexer.hpp"
+#include "Parser.hpp"
+
 #include <iostream>
-#include <driver.hh>
+#include <fstream>
 
-int main(int argc, char** argv) {
-    int result = 0;
-    Driver driver;
+yyFlexLexer *lexer;
 
-    for (int i = 1; i < argc; ++i) {
-        if (argv[i] == std::string("-p")) {
-            driver.trace_parsing = true;
-        } else if (argv[i] == std::string("-s")) {
-            driver.trace_scanning = true;
-        } else if (argv[i] == std::string("-l")) {
-            driver.location_debug = true;
-        } else if (!driver.parse(argv[i])) {
-            std::cout << driver.result << std::endl;
-        } else {
-            result = 1;
+int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc) {
+    yylloc->begin.line = lexer->lineno();
+    int token = lexer->yylex();
+    // if(token == yy::parser::token::NUM) {   // token == yy::parser::token::VAR
+        // yylval->build(std::string(lexer->YYText()));
+    // }
+    return token;
+}
+
+void yy::parser::error(const location_type& loc, const std::string& msg) {
+    std::cerr << "Hui!\n";
+    std::cerr << "file:  " << loc.begin.filename << std::endl;
+    std::cerr << "column " << loc.begin.column << std::endl;
+    std::cerr << "Line " << loc.begin.line << ": " << msg << std::endl;
+    exit(1);
+}
+
+int process(Node *e)
+{
+    switch (e->type_) {
+        case NodeType::NUM:
+            return e->val_.num;
+        case NodeType::OPER:
+        {
+            switch (e->val_.oper) {
+                case Operator::ADD:
+                    return process(e->left_) + process(e->right_);
+                case Operator::SUB:
+                    return process(e->left_) - process(e->right_);
+                case Operator::MUL:
+                    return process(e->left_) * process(e->right_);
+                case Operator::DIV:
+                    return process(e->left_) / process(e->right_);
+            }
         }
+        default:
+            /* should not be here */
+            return 0;
     }
+}
 
-    return result;
+int main(void)
+{
+    const char* test = "123";
+
+    // AST ast();
+    std::ifstream input(test);
+   
+    lexer = new yyFlexLexer(&input);
+    yy::parser parser;
+    parser.parse();
+    delete lexer;
+    return 0;
 }

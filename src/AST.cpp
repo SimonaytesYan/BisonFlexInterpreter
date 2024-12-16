@@ -1,4 +1,4 @@
-#include "AST.h"
+#include "AST.hpp"
 
 //================================ NODE ================================
 
@@ -51,7 +51,7 @@ Node& Node::operator=(Node&& other) {
 
 void Node::moveVar(Node&& other) {
     val_.var = other.val_.var;
-    other.val_.var = nullptr;
+    other.val_.var;
 }
 
 void Node::copyVar(const char* var) {
@@ -59,37 +59,38 @@ void Node::copyVar(const char* var) {
     strcpy(val_.var, var);
 }
 
-Node::Node(Node* left = nullptr, Node* right = nullptr):
+Node::Node(Node* left, Node* right):
 left_  (left),
 right_ (right),
 type_  (NodeType::FICT) { }
 
-Node::Node(int num, Node* left = nullptr, Node* right = nullptr):
+Node::Node(int num, Node* left, Node* right):
 left_  (left),
 right_ (right),
 type_  (NodeType::NUM),
 val_   ({.num = num}) { }
 
-Node::Node(const char* var, Node* left, Node* right):
+// Node::Node(const char* var, Node* left, Node* right):
+// left_  (left),
+// right_ (right),
+// type_  (NodeType::VAR) { 
+//     copyVar(var);
+// }
+
+Node::Node(std::string num, Node* left, Node* right):
 left_  (left),
 right_ (right),
-type_  (NodeType::VAR) { 
-    copyVar(var);
+type_  (NodeType::NUM) { 
+    val_ = {.num = atoi(num.c_str())};
 }
 
-Node::Node(char sym, Node* left, Node* right):
-left_  (left),
-right_ (right),
-type_  (NodeType::SYM),
-val_    ({.sym = sym}) { }
-
-Node::Node(Operator oper, Node* left = nullptr, Node* right = nullptr):
+Node::Node(Operator oper, Node* left, Node* right):
 left_  (left),
 right_ (right),
 type_  (NodeType::NUM),
 val_   ({.oper = oper}) { }
 
-Node::Node(Keyword keyword, Node* left = nullptr, Node* right = nullptr):
+Node::Node(Keyword keyword, Node* left, Node* right):
 left_  (left),
 right_ (right),
 type_  (NodeType::NUM),
@@ -102,10 +103,20 @@ Node::~Node() {
 
 //================================ AST ================================
 
-AST::AST() :
-root_() { }
 
-void AST::RecDelete(Node* node) {
+
+class AST {
+
+public:
+    AST(Node* root = nullptr) :
+    root_(root) { }
+    
+
+    ~AST() {
+        RecDelete(root_);
+    }
+private:
+    void RecDelete(Node* node) {
     if (node == nullptr)
         return;
 
@@ -113,9 +124,18 @@ void AST::RecDelete(Node* node) {
     RecDelete(node->right_);
 
     delete node;
+    }
+
+    
+    Node* root_;
+};
+
+AST g_THE_AST;
+
+void CreateAST(Node* root) {
+    g_THE_AST = AST(root);
 }
 
-AST::~AST() {
-    RecDelete(root_.left_);
-    RecDelete(root_.right_);
+void RunAST() {
+    // TODO interpret
 }

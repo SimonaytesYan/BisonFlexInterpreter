@@ -1,9 +1,12 @@
-#include <cstring>
+#pragma once
+
 #include <algorithm>
+#include <cstring>
+#include <string>
 
 enum class Operator {
-    PLUS,
-    MINUS,
+    ADD,
+    SUB,
     MUL,
     DIV,
     EQUATE,
@@ -12,12 +15,12 @@ enum class Operator {
     IS_GE,
     IS_LE,
     IS_G,
-    IS_L,
+    IS_L
 };
 
 enum class Keyword {
     PROGRAM,
-    BEGIN,
+    BEGIN_KW,
     END,
     VAR,
     IF,
@@ -26,16 +29,15 @@ enum class Keyword {
     FOR,
     TO,
     DO,
-    WHILE,
+    WHILE
 };
 
 enum class NodeType {
-    SYM,
     NUM,
     VAR,
     OPER,
     KEYWORD,
-    FICT,
+    FICT
 };
 
 union NodeValue {
@@ -43,7 +45,6 @@ union NodeValue {
     Keyword keyword;
     int num;
     char* var;
-    char sym;
 };
 
 struct Node {
@@ -60,8 +61,10 @@ struct Node {
 
     Node(Node* left = nullptr, Node* right = nullptr);
     Node(int num, Node* left = nullptr, Node* right = nullptr);
-    Node(const char* var, Node* left, Node* right);
-    Node(char sym, Node* left, Node* right);
+
+    Node(std::string num, Node* left = nullptr, Node* right = nullptr);
+
+    // Node(const char* var, Node* left, Node* right);
     Node(Operator oper, Node* left = nullptr, Node* right = nullptr);
     Node(Keyword keyword, Node* left = nullptr, Node* right = nullptr);
 
@@ -74,28 +77,5 @@ struct Node {
     Node* right_;
 };
 
-class AST {
-
-public:
-    AST() :
-    root_() {
-    }
-
-    void RecDelete(Node* node) {
-        if (node == nullptr)
-            return;
-
-        RecDelete(node->left_);
-        RecDelete(node->right_);
-
-        delete node;
-    }
-
-    ~AST() {
-        RecDelete(root_.left_);
-        RecDelete(root_.right_);
-    }
-private:
-    Node root_;
-
-};
+void CreateAST(Node* root);
+void RunAST();
