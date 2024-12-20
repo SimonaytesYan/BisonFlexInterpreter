@@ -24,7 +24,7 @@ using namespace yy;
 
 
 %%
-"1"                    { std::cerr << "LEXER: It is ok!\n"; return parser::token::ONE; }
+[0-9]+                 { std::cerr << "LEXER: NUM!\n"; return parser::token::NUM; }
 .                      { std::cerr << "LEXER: It is ok!\n"; return parser::token::EMPTY; }
 
 %% 

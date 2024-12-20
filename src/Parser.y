@@ -32,6 +32,9 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 /* Precedence (increasing) and associativity:
    a+b+c is (a+b)+c: left associativity
    a+b*c is a+(b*c): the precedence of "*" is higher than that of "+". */
+
+// %left ADD SUB
+// %left MUL DIV
        // expr { CreateAST($1); RunAST(); }
 
 // expr: 
@@ -49,14 +52,12 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 //   ONE { std::cerr << "posidnfn-eunpiesespoesfoesnf[oesno[sefmsokfn[soef[oseofn[okwok;jlihlihlihikj]]]]]\n"`; $$ = new Node("1", nullptr, nullptr);}
 // ;
 
-// %left ADD SUB
-// %left MUL DIV
-
-%token ONE
+// %token ADD
+%token<int> NUM
 %token EMPTY
 
 %%
 
 start: 
-    ONE | EMPTY
+    NUM
 ;
