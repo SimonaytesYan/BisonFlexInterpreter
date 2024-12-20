@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 
+const char* kTextFile = "lex_test";
+
 yyFlexLexer *lexer;
 
 int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc) {
@@ -51,10 +53,7 @@ int process(Node *e)
 
 int main(void)
 {
-    const char* test = "123";
-
-    // AST ast();
-    std::ifstream input(test);
+    std::ifstream input(kTextFile);
    
     lexer = new yyFlexLexer(&input);
     yy::parser parser;
