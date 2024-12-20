@@ -4,3 +4,11 @@ cmake_install.cmake
 CMakeCache.txt
 Makefile
 .vscode
+src/Lexer.cpp
+src/Lexer.hpp
+src/Parser.cpp
+src/Parser.hpp
+src/position.hh
+src/stack.hh
+src/location.hh
+src/test
