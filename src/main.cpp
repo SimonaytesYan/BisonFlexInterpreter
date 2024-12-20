@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-const char* kTextFile = "lex_test";
+const char* kTextFile = "lex_test.txt";
 
 yyFlexLexer *lexer;
 
@@ -54,10 +54,12 @@ int process(Node *e)
 int main(void)
 {
     std::ifstream input(kTextFile);
-   
+    
     lexer = new yyFlexLexer(&input);
     yy::parser parser;
+    parser.set_debug_level(1);
     parser.parse();
     delete lexer;
     return 0;
+    
 }

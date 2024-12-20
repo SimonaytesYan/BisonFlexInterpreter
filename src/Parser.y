@@ -24,8 +24,8 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 
 // %token <char> SYM
 // %token <char*> VAR
-%token NUM
-%token ONE
+// %token NUM
+// %token ONE
 
 // %type <Node*> expr
 
@@ -52,8 +52,11 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 // %left ADD SUB
 // %left MUL DIV
 
+%token ONE
+%token EMPTY
+
 %%
 
 start: 
-    ONE
+    ONE | EMPTY
 ;
