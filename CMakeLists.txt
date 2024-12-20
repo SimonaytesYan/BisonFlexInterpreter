@@ -7,8 +7,8 @@ set(SOURCE_DIR src)
 
 set(
     HEADERS
-    ${SOURCE_DIR}/driver.hh
-    ${SOURCE_DIR}/parser.hh
+    ${SOURCE_DIR}/AST.hpp
+    ${SOURCE_DIR}/parser.hpp
     )
 
 BISON_TARGET(
