@@ -1,6 +1,6 @@
 FILES = Lexer.cpp Parser.cpp AST.cpp main.cpp
 CC = g++
-CFLAGS = -g -std=c++2a
+CFLAGS = -g -fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr
 
 test: $(FILES)
 	$(CC) $(CFLAGS) $(FILES) -o test

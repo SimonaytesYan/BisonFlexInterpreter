@@ -7,6 +7,7 @@
 
 %code top{
 #include "AST.hpp"
+#include <string>
 }
 
 
@@ -53,11 +54,11 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 // ;
 
 // %token ADD
-%token<int> NUM
+%token <std::string> NUM
 %token EMPTY
 
 %%
 
 start: 
-    NUM
+    NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n";  }
 ;
