@@ -26,6 +26,7 @@ using namespace yy;
 %%
 [0-9]+                  { std::cerr << "LEXER: NUM!\n";         return parser::token::NUM; }
 "var"                   { std::cerr << "LEXER: keyword var!\n"; return parser::token::CREATE_VAR; }
+"writeln"               { std::cerr << "LEXER: keyword var!\n"; return parser::token::WRITELN;}
 [a-zA-Z_][a-zA-Z_0-9_]* { std::cerr << "LEXER: VAR!\n";         return parser::token::VAR; }
 "+"                     { std::cerr << "LEXER: +\n";            return parser::token::ADD; }
 "-"                     { std::cerr << "LEXER: -\n";            return parser::token::SUB; }

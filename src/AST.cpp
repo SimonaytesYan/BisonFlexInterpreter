@@ -56,9 +56,9 @@ void AST::run() {
 
 #define BINARY_OPER_EXEC(name, oper)                                            \
         case Operator::name: {                                                  \
-            std::cerr << "INTERPRETER: " #name "\n";                           \
+            std::cerr << "INTERPRETER: " #name "\n";                            \
             int res = ExecuteNode(node->left_) oper ExecuteNode(node->right_);  \
-            std::cerr << "INTERPRETER: " #name " res = " << res << "\n";              \
+            std::cerr << "INTERPRETER: " #name " res = " << res << "\n";        \
                                                                                 \
             return res;                                                         \
         }

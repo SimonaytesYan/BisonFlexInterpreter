@@ -17,10 +17,12 @@ enum class Operator {
 };
 
 enum class Keyword {
+    VAR,
+    READ,
+    WRITE,
     PROGRAM,
     BEGIN_KW,
     END,
-    VAR,
     IF,
     THEN,
     ELSE,
