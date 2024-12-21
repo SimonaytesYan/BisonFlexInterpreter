@@ -18,6 +18,8 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token CREATE_VAR
 %token WRITELN
 %token READLN
+%token BEGIN_SCOPE "begin"
+%token END_SCOPE   "end"
 
 %token ADD
 %token SUB
@@ -25,9 +27,10 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token DIV
 %token EQ
 
-%token LBRACKET "("
-%token RBRACKET ")"
+%token LBRACKET  "("
+%token RBRACKET  ")"
 %token SEMICOLON ";"
+%token DOT       "."
 
 %token <std::string> NUM
 %token <std::string> VAR
@@ -43,7 +46,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %%
 
 start: 
-    expr { AST ast($1); ast.graphicDump(); ast.run(); }
+   "begin" expr "end" "." { AST ast($2); ast.graphicDump(); ast.run(); }
 ;
 
 expr:

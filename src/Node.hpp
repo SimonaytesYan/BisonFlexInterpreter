@@ -21,8 +21,6 @@ enum class Keyword {
     READ,
     WRITE,
     PROGRAM,
-    BEGIN_KW,
-    END,
     IF,
     THEN,
     ELSE,

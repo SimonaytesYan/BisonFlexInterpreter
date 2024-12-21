@@ -1,10 +1,14 @@
-var a;
-var b;
-var c;
+begin
 
-read(a);
-read(b);
+    var a;
+    var b;
+    var c;
 
-c := a + b * b;
+    read(a);
+    read(b);
 
-write(c * c + 1);
+    c := a + b * b;
+
+    write(c * c + 1);
+
+end.

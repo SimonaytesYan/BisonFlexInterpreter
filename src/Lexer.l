@@ -28,6 +28,8 @@ using namespace yy;
 "var"                   { std::cerr << "LEXER: keyword var!\n";   return parser::token::CREATE_VAR; }
 "write"                 { std::cerr << "LEXER: keyword write!\n"; return parser::token::WRITELN;}
 "read"                  { std::cerr << "LEXER: keyword read!\n";  return parser::token::READLN;}
+"begin"                 { std::cerr << "LEXER: keyword begin!\n"; return parser::token::BEGIN_SCOPE;}
+"end"                   { std::cerr << "LEXER: keyword end!\n";   return parser::token::END_SCOPE;}
 [a-zA-Z_][a-zA-Z_0-9_]* { std::cerr << "LEXER: VAR!\n";           return parser::token::VAR; }
 "+"                     { std::cerr << "LEXER: +\n";              return parser::token::ADD; }
 "-"                     { std::cerr << "LEXER: -\n";              return parser::token::SUB; }
@@ -37,6 +39,7 @@ using namespace yy;
 "("                     { std::cerr << "LEXER: (\n";              return parser::token::LBRACKET; }
 ")"                     { std::cerr << "LEXER: )\n";              return parser::token::RBRACKET; }
 ";"                     { std::cerr << "LEXER: ;\n";              return parser::token::SEMICOLON; }
+"."                     { std::cerr << "LEXER: ;\n";              return parser::token::DOT; }
 [ \r\n\t]*              // Nothing
 .                       { std::cerr << "LEXER: It is ok!\n";      return parser::token::EMPTY; }
 
