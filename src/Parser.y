@@ -25,6 +25,12 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token SUB
 %token MUL
 %token DIV
+%token IS_EQ
+%token IS_NOT_EQ
+%token IS_GE
+%token IS_LE
+%token IS_G
+%token IS_L
 %token EQ
 
 %token LBRACKET  "("
@@ -39,6 +45,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 
 %type <Node*> expr
 %type <Node*> add_sub
+%type <Node*> compare_oper
 %type <Node*> mul_div
 %type <Node*> value
 %type <Node*> get_var
@@ -50,19 +57,35 @@ start:
 ;
 
 expr:
-    CREATE_VAR get_var ";"      { std::cerr << "SYNTAX: create var \n"; 
-                                  $$ = new Node(Keyword::VAR, $2, nullptr); }
+    CREATE_VAR get_var ";"           { std::cerr << "SYNTAX: create var \n"; 
+                                       $$ = new Node(Keyword::VAR, $2, nullptr); }
 |
-    get_var EQ add_sub ";"      { std::cerr << "SYNTAX: var\n"; 
-                                  $$ = new Node(Operator::EQUATE, $1, $3); }
+    get_var EQ compare_oper ";"      { std::cerr << "SYNTAX: var\n"; 
+                                       $$ = new Node(Operator::EQUATE, $1, $3); }
 |
-    WRITELN "(" add_sub ")" ";" { std::cerr << "SYNTAX: write \n"; 
-                                  $$ = new Node(Keyword::WRITE, $3, nullptr); }
+    WRITELN "(" compare_oper ")" ";" { std::cerr << "SYNTAX: write \n"; 
+                                       $$ = new Node(Keyword::WRITE, $3, nullptr); }
 |
-    READLN "(" get_var ")" ";"  { std::cerr << "SYNTAX: read \n"; 
-                                  $$ = new Node(Keyword::READ, $3, nullptr); }
+    READLN "(" get_var ")" ";"       { std::cerr << "SYNTAX: read \n"; 
+                                       $$ = new Node(Keyword::READ, $3, nullptr); }
 |
-    expr expr                   { $$ = new Node($1, $2); }
+    expr expr                        { $$ = new Node($1, $2); }
+;
+
+compare_oper:
+    compare_oper IS_EQ     compare_oper { $$ = new Node(Operator::IS_EQ,     $1, $3); }
+|
+    compare_oper IS_NOT_EQ compare_oper { $$ = new Node(Operator::IS_NOT_EQ, $1, $3); }
+|
+    compare_oper IS_GE     compare_oper { $$ = new Node(Operator::IS_GE,     $1, $3); }
+|
+    compare_oper IS_LE     compare_oper { $$ = new Node(Operator::IS_LE,     $1, $3); }
+|
+    compare_oper IS_G      compare_oper { $$ = new Node(Operator::IS_G,      $1, $3); }
+|
+    compare_oper IS_L      compare_oper { $$ = new Node(Operator::IS_L,      $1, $3); }
+|
+    add_sub                             { $$ = $1; }
 ;
 
 add_sub:

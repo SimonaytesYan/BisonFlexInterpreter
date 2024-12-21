@@ -214,14 +214,17 @@ void fprintOper(const Node* node, FILE* fp) {
         case Operator::IS_GE:
             fprintf(fp, ">=");
             break;
-        case Operator::IS_NOT_EQ:
-            fprintf(fp, "!=");
-            break;
-        case Operator::IS_L:
-            fprintf(fp, "&#60;");
-            break;
         case Operator::IS_LE:
             fprintf(fp, "<=");
+            break;
+        case Operator::IS_L:
+            fprintf(fp, "\\<");
+            break;
+        case Operator::IS_G:
+            fprintf(fp, "\\>");
+            break;
+        case Operator::IS_NOT_EQ:
+            fprintf(fp, "\\<\\>");
             break;
         default:
             fprintf(fp, "#");
