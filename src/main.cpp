@@ -51,15 +51,25 @@ int process(Node *e)
     }
 }
 
-int main(void)
+int main(int argc, const char* argv[])
 {
-    std::ifstream input(kTextFile);
+    if (argc != 2) {
+        std::cerr << "Wrong number of arguments!\n";
+        return -1; 
+    }
+
+    const char* code_file = argv[1];
+
+    std::ifstream input(code_file);
+    if (!input) {
+        std::cerr << "Cannot open file " << code_file << "!\n";
+        return -1; 
+    }
     
     lexer = new yyFlexLexer(&input);
     yy::parser parser;
     parser.set_debug_level(1);
     parser.parse();
-    delete lexer;
-    return 0;
     
+    delete lexer;
 }
