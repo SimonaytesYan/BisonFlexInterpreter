@@ -67,7 +67,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %%
 
 start: 
-    expr { AST ast($1); ast.run(); }
+    expr { AST ast($1); ast.graphicDump(); ast.run(); }
     // NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n";  }
 ;
 

@@ -25,10 +25,13 @@ public:
     AST(Node* root = nullptr);
 
     AST& operator=(AST&& other);
-    
+
     void run();
 
+    void graphicDump();
+
     ~AST();
+    
 
 private:
     void RecDelete(Node* node);

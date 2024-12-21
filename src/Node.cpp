@@ -89,13 +89,13 @@ type_  (NodeType::NUM) {
 Node::Node(Operator oper, Node* left, Node* right):
 left_  (left),
 right_ (right),
-type_  (NodeType::NUM),
+type_  (NodeType::OPER),
 val_   ({.oper = oper}) { }
 
 Node::Node(Keyword keyword, Node* left, Node* right):
 left_  (left),
 right_ (right),
-type_  (NodeType::NUM),
+type_  (NodeType::KEYWORD),
 val_   ({.keyword = keyword}) { }
 
 Node::~Node() {
