@@ -24,8 +24,12 @@ using namespace yy;
 
 
 %%
-[0-9]+                 { std::cerr << "LEXER: NUM!\n"; return parser::token::NUM; }
-.                      { std::cerr << "LEXER: It is ok!\n"; return parser::token::EMPTY; }
+[0-9]+                  { std::cerr << "LEXER: NUM!\n"; return parser::token::NUM; }
+"+"                     { std::cerr << "LEXER: +\n"; return parser::token::ADD; }
+"-"                     { std::cerr << "LEXER: -\n"; return parser::token::SUB; }
+"*"                     { std::cerr << "LEXER: *\n"; return parser::token::MUL; }
+"/"                     { std::cerr << "LEXER: /\n"; return parser::token::DIV; }
+.                       { std::cerr << "LEXER: It is ok!\n"; return parser::token::EMPTY; }
 
 %% 
 

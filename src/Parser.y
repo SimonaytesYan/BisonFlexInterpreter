@@ -53,12 +53,32 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 //   ONE { std::cerr << "posidnfn-eunpiesespoesfoesnf[oesno[sefmsokfn[soef[oseofn[okwok;jlihlihlihikj]]]]]\n"`; $$ = new Node("1", nullptr, nullptr);}
 // ;
 
-// %token ADD
 %token <std::string> NUM
+
+%token ADD
+%token SUB
+%token MUL
+%token DIV
+
 %token EMPTY
+
+%type <Node*> expr
 
 %%
 
 start: 
-    NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n";  }
+    expr { AST ast($1); ast.run(); }
+    // NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n";  }
+;
+
+expr:
+    expr ADD expr { $$ = new Node(Operator::ADD, $1, $3); }
+|
+    expr SUB expr { $$ = new Node(Operator::SUB, $1, $3); }
+|
+    expr MUL expr { $$ = new Node(Operator::MUL, $1, $3); }
+|
+    expr DIV expr { $$ = new Node(Operator::DIV, $1, $3); }
+|
+    NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n"; $$ = new Node($1, nullptr, nullptr); }
 ;
