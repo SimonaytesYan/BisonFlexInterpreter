@@ -1,10 +1,26 @@
 digraph G{
 node[shape = record, fontsize = 14];
 splines = ortho
-info[label = "root = 0x0000A0"]
+info[label = "root = 0x000220"]
+Node000220[style = "filled,rounded", fillcolor = "#FFDC4B", label = "{{ <v>OPER | +} }"]
+Node000220 -> Node000160[xlabel = "L"]
+Node000160[style = "filled,rounded", fillcolor = "#FFDC4B", label = "{{ <v>OPER | *} }"]
+Node000160 -> Node0000A0[xlabel = "L"]
 Node0000A0[style = "filled,rounded", fillcolor = "#FFDC4B", label = "{{ <v>OPER | +} }"]
 Node0000A0 -> Node000040[xlabel = "L"]
 Node000040[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM | 1} }"]
 Node0000A0 -> Node000070[xlabel = "R"]
-Node000070[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM | 1} }"]
+Node000070[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM | 2} }"]
+Node000160 -> Node000130[xlabel = "R"]
+Node000130[style = "filled,rounded", fillcolor = "#FFDC4B", label = "{{ <v>OPER | /} }"]
+Node000130 -> Node0000D0[xlabel = "L"]
+Node0000D0[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM | 3} }"]
+Node000130 -> Node000100[xlabel = "R"]
+Node000100[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM | 3} }"]
+Node000220 -> Node0001F0[xlabel = "R"]
+Node0001F0[style = "filled,rounded", fillcolor = "#FFDC4B", label = "{{ <v>OPER | +} }"]
+Node0001F0 -> Node000190[xlabel = "L"]
+Node000190[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM | 9} }"]
+Node0001F0 -> Node0001C0[xlabel = "R"]
+Node0001C0[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM | 7} }"]
 }

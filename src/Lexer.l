@@ -29,6 +29,9 @@ using namespace yy;
 "-"                     { std::cerr << "LEXER: -\n"; return parser::token::SUB; }
 "*"                     { std::cerr << "LEXER: *\n"; return parser::token::MUL; }
 "/"                     { std::cerr << "LEXER: /\n"; return parser::token::DIV; }
+"("                     { std::cerr << "LEXER: (\n"; return parser::token::LBRACKET; }
+")"                     { std::cerr << "LEXER: )\n"; return parser::token::RBRACKET; }
+[ \r\n\t]*              // Nothing
 .                       { std::cerr << "LEXER: It is ok!\n"; return parser::token::EMPTY; }
 
 %% 

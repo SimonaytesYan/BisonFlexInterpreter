@@ -59,6 +59,8 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token SUB
 %token MUL
 %token DIV
+%token LBRACKET "("
+%token RBRACKET ")"
 
 %token EMPTY
 
@@ -71,7 +73,6 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 
 start: 
     expr { AST ast($1); ast.graphicDump(); ast.run(); }
-    // NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n";  }
 ;
 
 expr:
@@ -79,19 +80,23 @@ expr:
 ;
 
 add_sub:
-    mul_div ADD mul_div { $$ = new Node(Operator::ADD, $1, $3); }
+    add_sub ADD add_sub { std::cerr << "SYNTAX: add \n"; $$ = new Node(Operator::ADD, $1, $3); }
 |
-    mul_div SUB mul_div { $$ = new Node(Operator::SUB, $1, $3); }
+    add_sub SUB add_sub { std::cerr << "SYNTAX: sub \n"; $$ = new Node(Operator::SUB, $1, $3); }
+|
+    mul_div             { $$ = $1; } 
 ;
 
 mul_div:
-    expr MUL expr { $$ = new Node(Operator::MUL, $1, $3); }
+    mul_div MUL mul_div { std::cerr << "SYNTAX: mul \n"; $$ = new Node(Operator::MUL, $1, $3); }
 |
-    expr DIV expr { $$ = new Node(Operator::DIV, $1, $3); }
+    mul_div DIV mul_div { std::cerr << "SYNTAX: div \n"; $$ = new Node(Operator::DIV, $1, $3); }
+|
+    value { $$ = $1; }
 ;
 
 value:
-    expr { $$ = $1; }
+    LBRACKET expr RBRACKET { $$ = $2; }
 |
     NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n"; $$ = new Node($1, nullptr, nullptr); }
 ;
