@@ -35,6 +35,7 @@ private:
     int  ExecuteOperator(const Node* node);
     int  ExecuteNode    (const Node* node);
     int  ExecuteKeyword (const Node* node);
+    int  GetVarValue    (const std::string& var_name);
     void RecDelete      (Node* node);
 
     Node* root_;

@@ -2,6 +2,9 @@ var a;
 var b;
 var c;
 
-a := 1;
-b := 2;
+read(a);
+read(b);
+
 c := a + b * b;
+
+write(c * c + 1);

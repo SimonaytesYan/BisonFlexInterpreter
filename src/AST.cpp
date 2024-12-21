@@ -79,7 +79,7 @@ int AST::ExecuteOperator(const Node* node) {
                 vars_[var_name] = num;
             else {
                 std::cerr << "ERROR DURING EXECUTION\n"; 
-                std::cerr << "variable <" + var_name + "> not exist\n";
+                std::cerr << "variable <" + var_name + "> do not exist\n";
  
                 throw -1;
             }
@@ -105,17 +105,42 @@ int AST::ExecuteKeyword(const Node* node) {
                 std::cerr << "variable <" + var_name + "> already exist\n";
                 throw -1;
             }
-                
+
+            return 0;
+        }
+        case Keyword::WRITE: {
+            std::cout << ExecuteNode(node->left_);
+            return 0;
+        }
+
+        case Keyword::READ: {
+            const std::string& var_name = node->left_->val_.var;
+            if (vars_.count(var_name) != 0)
+                std::cin >> vars_[var_name];
+            else  {
+                std::cerr << "ERROR DURING EXECUTION\n"; 
+                std::cerr << "variable <" + var_name + "> do not exist\n";
+                throw -1;
+            }
+
             return 0;
         }
 
         default: {
-            std::cerr << "INTERPRETER: Unknown keyword type\n";
+            std::cerr << "INTERPRETER: Unknown keyword type " << (int)node->val_.keyword << "\n";
             throw -1;
         }
     }
 }
-
+int AST::GetVarValue(const std::string& var_name) {
+    if (vars_.count(var_name) != 0)
+        return vars_[var_name];
+    else  {
+        std::cerr << "ERROR DURING EXECUTION\n"; 
+        std::cerr << "variable <" + var_name + "> do not exist\n";
+        throw -1;
+    }
+}
 
 int AST::ExecuteNode(const Node* node) {
     switch (node->type_)
@@ -128,13 +153,7 @@ int AST::ExecuteNode(const Node* node) {
             std::cerr << "INTERPRETER: Var " << node->val_.var << "\n"; 
 
             const std::string& var_name = node->val_.var;
-            if (vars_.count(var_name) != 0) {
-                return vars_[var_name];
-            }
-
-            std::cerr << "ERROR DURING EXECUTION\n"; 
-            std::cerr << "variable <" + var_name + "> not exist\n";
-            throw -1;
+            return GetVarValue(var_name);
         }
         case NodeType::OPER: {
             std::cerr << "INTERPRETER: Operator " << (int)node->val_.oper << "\n"; 
@@ -158,17 +177,19 @@ int AST::ExecuteNode(const Node* node) {
     }
 }
 
-static const char* kKeywords[] = {"PROGRAM",
-                                  "BEGIN_KW",
-                                  "END",
-                                  "VAR",
-                                  "IF",
-                                  "THEN",
-                                  "ELSE",
-                                  "FOR",
-                                  "TO",
-                                  "DO",
-                                  "WHILE"};  
+static const char* kKeywords[] = { "VAR",
+                                   "READ",
+                                   "WRITE",
+                                   "PROGRAM",
+                                   "BEGIN_KW",
+                                   "END",
+                                   "IF",
+                                   "THEN",
+                                   "ELSE",
+                                   "FOR",
+                                   "TO",
+                                   "DO",
+                                   "WHILE"};  
 
 
 void fprintOper(const Node* node, FILE* fp) {

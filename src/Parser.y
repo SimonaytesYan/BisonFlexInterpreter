@@ -15,44 +15,6 @@
 int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 }
 
-// %token ADD
-// %token SUB
-// %token MUL
-// %token DIV
-
-// %token LBRACKET "("
-// %token RBRACKET ")"
-
-// %token <char> SYM
-// %token <char*> VAR
-// %token NUM
-// %token ONE
-
-// %type <Node*> expr
-
-/* Precedence (increasing) and associativity:
-   a+b+c is (a+b)+c: left associativity
-   a+b*c is a+(b*c): the precedence of "*" is higher than that of "+". */
-
-// %left ADD SUB
-// %left MUL DIV
-       // expr { CreateAST($1); RunAST(); }
-
-// expr: 
-// //     expr ADD expr { $$ = new Node(Operator::ADD, $1, $3); }
-// // |
-// //     expr SUB expr { $$ = new Node(Operator::SUB, $1, $3); }
-// // |
-// //     expr MUL expr { $$ = new Node(Operator::MUL, $1, $3); }
-// // |
-// //     expr DIV expr { $$ = new Node(Operator::DIV, $1, $3); }
-// // |
-// //     "(" expr ")"  { $$ = $2; }
-// // |
-//     // NUM           { $$ = new Node($1, nullptr, nullptr); }
-//   ONE { std::cerr << "posidnfn-eunpiesespoesfoesnf[oesno[sefmsokfn[soef[oseofn[okwok;jlihlihlihikj]]]]]\n"`; $$ = new Node("1", nullptr, nullptr);}
-// ;
-
 %token CREATE_VAR
 %token WRITELN
 %token READLN
@@ -85,16 +47,19 @@ start:
 ;
 
 expr:
-    CREATE_VAR get_var ";" { std::cerr << "SYNTAX: create var \n"; 
-                             $$ = new Node(Keyword::VAR, $2, nullptr); }
+    CREATE_VAR get_var ";"      { std::cerr << "SYNTAX: create var \n"; 
+                                  $$ = new Node(Keyword::VAR, $2, nullptr); }
 |
-    get_var EQ add_sub ";" { std::cerr << "SYNTAX: var\n"; 
-                             $$ = new Node(Operator::EQUATE, $1, $3); }
+    get_var EQ add_sub ";"      { std::cerr << "SYNTAX: var\n"; 
+                                  $$ = new Node(Operator::EQUATE, $1, $3); }
 |
-    writeln "(" add_sub ")" ";" { std::cerr << "SYNTAX: write ln \n"; 
-                                  $$ = new Node(Keyword::, $1, $3); }
+    WRITELN "(" add_sub ")" ";" { std::cerr << "SYNTAX: write \n"; 
+                                  $$ = new Node(Keyword::WRITE, $3, nullptr); }
 |
-    expr expr              { $$ = new Node($1, $2); }
+    READLN "(" get_var ")" ";"  { std::cerr << "SYNTAX: read \n"; 
+                                  $$ = new Node(Keyword::READ, $3, nullptr); }
+|
+    expr expr                   { $$ = new Node($1, $2); }
 ;
 
 add_sub:
