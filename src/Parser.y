@@ -53,14 +53,20 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 //   ONE { std::cerr << "posidnfn-eunpiesespoesfoesnf[oesno[sefmsokfn[soef[oseofn[okwok;jlihlihlihikj]]]]]\n"`; $$ = new Node("1", nullptr, nullptr);}
 // ;
 
-%token <std::string> NUM
+%token CREATE_VAR
 
 %token ADD
 %token SUB
 %token MUL
 %token DIV
+%token EQ
+
 %token LBRACKET "("
 %token RBRACKET ")"
+%token SEMICOLON ";"
+
+%token <std::string> NUM
+%token <std::string> VAR
 
 %token EMPTY
 
@@ -68,6 +74,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %type <Node*> add_sub
 %type <Node*> mul_div
 %type <Node*> value
+%type <Node*> get_var
 
 %%
 
@@ -76,7 +83,13 @@ start:
 ;
 
 expr:
-    add_sub { $$ = $1; }
+    CREATE_VAR get_var ";" { std::cerr << "SYNTAX: create var \n"; 
+                             $$ = new Node(Keyword::VAR, $2, nullptr); }
+|
+    get_var EQ add_sub ";" { std::cerr << "SYNTAX: var " << $1 << " = " << $3 << "\n";
+                             $$ = new Node(Operator::EQUATE, $1, $3); }
+|
+    expr expr              { $$ = new Node($1, $2); }
 ;
 
 add_sub:
@@ -84,7 +97,7 @@ add_sub:
 |
     add_sub SUB add_sub { std::cerr << "SYNTAX: sub \n"; $$ = new Node(Operator::SUB, $1, $3); }
 |
-    mul_div             { $$ = $1; } 
+    mul_div             { $$ = $1; }
 ;
 
 mul_div:
@@ -96,7 +109,14 @@ mul_div:
 ;
 
 value:
-    LBRACKET expr RBRACKET { $$ = $2; }
+    "(" expr ")" { $$ = $2; }
 |
-    NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n"; $$ = new Node($1, nullptr, nullptr); }
+    NUM     { std::string num = $1; std::cerr << "SYNTAX: NUM = " + num + "\n"; $$ = new Node(atoi(num.c_str()), nullptr, nullptr); }
+|
+    get_var { $$ = $1; }
 ;
+
+get_var:
+    VAR { std::string var = $1; std::cerr << "SYNTAX: VAR = " + $1 + "\n"; $$ = new Node(var.c_str(), nullptr, nullptr); }
+;
+

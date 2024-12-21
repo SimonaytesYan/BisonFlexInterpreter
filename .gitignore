@@ -5,3 +5,4 @@ CMakeCache.txt
 .vscode
 build
 bin
+log

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cstring>
 #include <string>
-#include <vector>
+#include <map>
 
 #include "Node.hpp"
 
@@ -23,7 +23,6 @@ class AST {
 public:
     AST(AST&& other);
     AST(Node* root = nullptr);
-
     AST& operator=(AST&& other);
 
     void run();
@@ -31,11 +30,13 @@ public:
     void graphicDump();
 
     ~AST();
-    
 
 private:
-    void RecDelete(Node* node);
+    int  ExecuteOperator(const Node* node);
+    int  ExecuteNode    (const Node* node);
+    int  ExecuteKeyword (const Node* node);
+    void RecDelete      (Node* node);
 
     Node* root_;
-    std::vector<Var> vars_;
+    std::map<std::string, int> vars_;
 };

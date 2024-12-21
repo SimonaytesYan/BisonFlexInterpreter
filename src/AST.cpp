@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-static int  ExecuteOperator(const Node* node);
-static int  ExecuteNode    (const Node* node);
 static void writeNodeAndEdge(Node* node, FILE* fp);
 
 //================================ AST ================================
@@ -46,48 +44,116 @@ void AST::RecDelete(Node* node) {
 
 void AST::run() {
     std::cerr << "\n\nINTERPRETER: run\n\n";
-    ExecuteNode(root_);
-    std::cerr << "\n\nINTERPRETER: stop\n\n";
-}
+    try {
+        ExecuteNode(root_);
+    }
+    catch(...) {
+        std::cerr << "\n\nINTERPRETER: stop with error\n\n";
+    }
 
+    std::cerr << "\n\nINTERPRETER: stop successfully\n\n";
+}
 
 #define BINARY_OPER_EXEC(name, oper)                                            \
         case Operator::name: {                                                  \
             std::cerr << "INTERPRETER: " #name "\n";                           \
             int res = ExecuteNode(node->left_) oper ExecuteNode(node->right_);  \
-            std::cerr << "INTERPRETER: ADD res = " << res << "\n";              \
+            std::cerr << "INTERPRETER: " #name " res = " << res << "\n";              \
                                                                                 \
             return res;                                                         \
         }
 
-int ExecuteOperator(const Node* node) {
+int AST::ExecuteOperator(const Node* node) {
     switch (node->val_.oper)
     {
         BINARY_OPER_EXEC(ADD, +);
         BINARY_OPER_EXEC(SUB, -);
         BINARY_OPER_EXEC(MUL, *);
         BINARY_OPER_EXEC(DIV, /);
+        case Operator::EQUATE: {
+            std::cerr << "INTERPRETER: =\n";
+            int num = ExecuteNode(node->right_);
+
+            const std::string& var_name = node->left_->val_.var;
+            if (vars_.count(var_name) != 0)
+                vars_[var_name] = num;
+            else {
+                std::cerr << "ERROR DURING EXECUTION\n"; 
+                std::cerr << "variable <" + var_name + "> not exist\n";
+ 
+                throw -1;
+            }
+
+            return num;
+        }
         default: {
-            std::cerr << "INTERPRETER: Unknown oper type\n";
-            return -1;
+            std::cerr << "INTERPRETER: Unknown operator type\n";
+            throw -1;
         }
     }
 }
 
-int ExecuteNode(const Node* node) {
+int AST::ExecuteKeyword(const Node* node) {
+    switch (node->val_.keyword)
+    {
+        case Keyword::VAR: {
+            const std::string& var_name = node->left_->val_.var;
+            if (vars_.count(var_name) == 0)
+                vars_[var_name] = 0;
+            else  {
+                std::cerr << "ERROR DURING EXECUTION\n"; 
+                std::cerr << "variable <" + var_name + "> already exist\n";
+                throw -1;
+            }
+                
+            return 0;
+        }
+
+        default: {
+            std::cerr << "INTERPRETER: Unknown keyword type\n";
+            throw -1;
+        }
+    }
+}
+
+
+int AST::ExecuteNode(const Node* node) {
     switch (node->type_)
     {
         case NodeType::NUM: {
             std::cerr << "INTERPRETER: Number " << node->val_.num << "\n"; 
             return node->val_.num;
         }
+        case NodeType::VAR: {
+            std::cerr << "INTERPRETER: Var " << node->val_.var << "\n"; 
+
+            const std::string& var_name = node->val_.var;
+            if (vars_.count(var_name) != 0) {
+                return vars_[var_name];
+            }
+
+            std::cerr << "ERROR DURING EXECUTION\n"; 
+            std::cerr << "variable <" + var_name + "> not exist\n";
+            throw -1;
+        }
         case NodeType::OPER: {
+            std::cerr << "INTERPRETER: Operator " << (int)node->val_.oper << "\n"; 
             return ExecuteOperator(node);
         }
-    
+        case NodeType::KEYWORD: {
+            std::cerr << "INTERPRETER: Keyword " << (int)node->val_.keyword << "\n"; 
+            return ExecuteKeyword(node);
+        }
+        case NodeType::FICT: {
+            std::cerr << "INTERPRETER: Fict\n"; 
+            ExecuteNode(node->left_);
+            ExecuteNode(node->right_);
+
+            return 0;
+        }
         default: {
-            std::cerr << "INTERPRETER: Unknown node type\n";
-            return -1;
+            std::cerr << "INTERPRETER: Unknown node type " << (int)node->type_ << "\n";
+            throw -1;
         }
     }
 }

@@ -60,9 +60,7 @@ struct Node {
     Node(Node* left = nullptr, Node* right = nullptr);
     Node(int num, Node* left = nullptr, Node* right = nullptr);
 
-    Node(std::string num, Node* left = nullptr, Node* right = nullptr);
-
-    // Node(const char* var, Node* left, Node* right);
+    Node(const char* var, Node* left, Node* right);
     Node(Operator oper, Node* left = nullptr, Node* right = nullptr);
     Node(Keyword keyword, Node* left = nullptr, Node* right = nullptr);
 

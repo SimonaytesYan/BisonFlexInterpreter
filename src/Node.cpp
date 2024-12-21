@@ -57,7 +57,7 @@ void Node::moveVar(Node&& other) {
 }
 
 void Node::copyVar(const char* var) {
-    val_.var = new char[strlen(var)];
+    val_.var = new char[strlen(var) + 1];
     strcpy(val_.var, var);
 }
 
@@ -72,18 +72,11 @@ right_ (right),
 type_  (NodeType::NUM),
 val_   ({.num = num}) { }
 
-// Node::Node(const char* var, Node* left, Node* right):
-// left_  (left),
-// right_ (right),
-// type_  (NodeType::VAR) { 
-//     copyVar(var);
-// }
-
-Node::Node(std::string num, Node* left, Node* right):
+Node::Node(const char* var, Node* left, Node* right):
 left_  (left),
 right_ (right),
-type_  (NodeType::NUM) { 
-    val_ = {.num = atoi(num.c_str())};
+type_  (NodeType::VAR) { 
+    copyVar(var);
 }
 
 Node::Node(Operator oper, Node* left, Node* right):
