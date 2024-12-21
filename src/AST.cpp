@@ -70,6 +70,13 @@ int AST::ExecuteOperator(const Node* node) {
         BINARY_OPER_EXEC(SUB, -);
         BINARY_OPER_EXEC(MUL, *);
         BINARY_OPER_EXEC(DIV, /);
+
+        BINARY_OPER_EXEC(IS_EQ, ==);
+        BINARY_OPER_EXEC(IS_GE, >=);
+        BINARY_OPER_EXEC(IS_LE, <=);
+        BINARY_OPER_EXEC(IS_G,  >);
+        BINARY_OPER_EXEC(IS_L,  <);
+
         case Operator::EQUATE: {
             std::cerr << "INTERPRETER: =\n";
             int num = ExecuteNode(node->right_);
@@ -109,7 +116,7 @@ int AST::ExecuteKeyword(const Node* node) {
             return 0;
         }
         case Keyword::WRITE: {
-            std::cout << ExecuteNode(node->left_);
+            std::cout << ExecuteNode(node->left_) << std::endl;
             return 0;
         }
 
@@ -212,10 +219,10 @@ void fprintOper(const Node* node, FILE* fp) {
             fprintf(fp, "=");
             break;
         case Operator::IS_GE:
-            fprintf(fp, ">=");
+            fprintf(fp, "\\>=");
             break;
         case Operator::IS_LE:
-            fprintf(fp, "<=");
+            fprintf(fp, "\\<=");
             break;
         case Operator::IS_L:
             fprintf(fp, "\\<");
