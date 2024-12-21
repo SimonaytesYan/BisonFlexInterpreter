@@ -63,6 +63,9 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token EMPTY
 
 %type <Node*> expr
+%type <Node*> add_sub
+%type <Node*> mul_div
+%type <Node*> value
 
 %%
 
@@ -72,13 +75,23 @@ start:
 ;
 
 expr:
-    expr ADD expr { $$ = new Node(Operator::ADD, $1, $3); }
+    add_sub { $$ = $1; }
+;
+
+add_sub:
+    mul_div ADD mul_div { $$ = new Node(Operator::ADD, $1, $3); }
 |
-    expr SUB expr { $$ = new Node(Operator::SUB, $1, $3); }
-|
+    mul_div SUB mul_div { $$ = new Node(Operator::SUB, $1, $3); }
+;
+
+mul_div:
     expr MUL expr { $$ = new Node(Operator::MUL, $1, $3); }
 |
     expr DIV expr { $$ = new Node(Operator::DIV, $1, $3); }
+;
+
+value:
+    expr { $$ = $1; }
 |
     NUM { std::cerr << "SYNTAX: NUM = " << $1 << "\n"; $$ = new Node($1, nullptr, nullptr); }
 ;
