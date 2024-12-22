@@ -45,6 +45,7 @@ using namespace yy;
 ")"                     { std::cerr << "LEXER: )\n";              return parser::token::RBRACKET; }
 ";"                     { std::cerr << "LEXER: ;\n";              return parser::token::SEMICOLON; }
 "."                     { std::cerr << "LEXER: .\n";              return parser::token::DOT; }
+"\""                    { std::cerr << "LEXER: \"\n";             return parser::token::QUOTES; }
 
 [0-9]+                  { std::cerr << "LEXER: NUM!\n";           return parser::token::NUM; }
 [a-zA-Z_][a-zA-Z_0-9_]* { std::cerr << "LEXER: VAR!\n";           return parser::token::VAR; }

@@ -24,13 +24,13 @@ begin
 
     while c < 10 do
     begin
-        write(42);
+        write("Hello");
         c := c + 1;
     end;
 
     for cnt := 0 to 5 do
     begin
-        write(44);
+        write("world");
     end;
 
 end.

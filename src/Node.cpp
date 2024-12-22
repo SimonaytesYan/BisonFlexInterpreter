@@ -92,6 +92,14 @@ type_  (NodeType::KEYWORD),
 val_   ({.keyword = keyword}) { }
 
 Node::~Node() {
-    if (type_ == NodeType::VAR)
+    if (type_ == NodeType::VAR || type_ == NodeType::STR)
         delete[] val_.var;
+}
+
+Node* Node::CreateString(const std::string& str) {
+    Node* node = new Node(str.c_str(), nullptr, nullptr);
+
+    node->type_ = NodeType::STR;
+
+    return node;
 }

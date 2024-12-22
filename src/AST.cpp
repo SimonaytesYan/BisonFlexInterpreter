@@ -31,7 +31,7 @@ AST::~AST() {
 
 void AST::RecDelete(Node* node) {
     std::cerr << "Delete node " << node << "\n";
-        
+
     if (node == nullptr)
         return;
 
@@ -175,7 +175,10 @@ int AST::ExecuteKeyword(const Node* node) {
             return 0;
         }
         case Keyword::WRITE: {
-            std::cout << ExecuteNode(node->left_) << std::endl;
+            if (node->left_->type_ == NodeType::STR)
+                std::cout << node->left_->val_.var << std::endl;
+            else
+                std::cout << ExecuteNode(node->left_) << std::endl;
             return 0;
         }
 

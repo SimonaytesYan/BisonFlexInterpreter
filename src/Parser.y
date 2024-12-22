@@ -49,6 +49,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token RBRACKET  ")"
 %token SEMICOLON ";"
 %token DOT       "."
+%token QUOTES
 
 %token <std::string> NUM
 %token <std::string> VAR
@@ -62,6 +63,8 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %type <Node*> mul_div
 %type <Node*> value
 %type <Node*> get_var
+%type <Node*> str
+%type <std::string> characters
 
 %%
 
@@ -78,6 +81,8 @@ expr:
 |
     WRITELN "(" logical_op ")" ";"   { std::cerr << "SYNTAX: write \n"; 
                                        $$ = new Node(Keyword::WRITE, $3, nullptr); }
+|
+    WRITELN "(" str ")" ";"          { $$ = new Node(Keyword::WRITE, $3, nullptr); }
 |
     READLN "(" get_var ")" ";"       { std::cerr << "SYNTAX: read \n"; 
                                        $$ = new Node(Keyword::READ, $3, nullptr); }
@@ -106,6 +111,18 @@ expr:
                                        $$ = new Node(Keyword::FOR, statement, cycle_body); }
 |
     expr expr                        { $$ = new Node($1, $2); }
+;
+
+str:
+    QUOTES characters QUOTES { $$ = Node::CreateString($2); }
+;
+
+characters:
+    characters characters { $$ = $1 + $2; }
+|
+    VAR                   { $$ = std::string($1); }
+|
+    NUM                   { $$ = std::string($1); }
 ;
 
 logical_op:

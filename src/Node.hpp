@@ -34,7 +34,8 @@ enum class NodeType {
     VAR,
     OPER,
     KEYWORD,
-    FICT
+    FICT,
+    STR
 };
 
 union NodeValue {
@@ -45,6 +46,8 @@ union NodeValue {
 };
 
 struct Node {
+
+    static Node* CreateString(const std::string& str);
 
     Node(const Node& other);
     Node(Node&& other);
