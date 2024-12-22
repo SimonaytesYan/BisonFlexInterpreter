@@ -329,7 +329,7 @@ void fprintOper(const Node* node, FILE* fp) {
 
 void AST::graphicDump()
 {
-    printf("Graphic dump\n");
+    log_out << "Graphic dump\n";
 
     FILE* fp = fopen("GraphicDumps/dump", "w");
 
@@ -395,6 +395,12 @@ static void writeNodeAndEdge(Node* node, FILE* fp)
             fprintf(fp, node_format, node, light_grey);
             fprintf(fp, "FICT ");
             break;
+        }
+        case NodeType::STR:
+        {
+            fprintf(fp, node_format, node, light_red);
+            fprintf(fp, "STR | %s ", node->val_.var);
+            break;    
         }
         default:
             fprintf(fp, "unknown");

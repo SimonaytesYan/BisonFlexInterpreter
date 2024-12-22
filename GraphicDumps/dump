@@ -126,7 +126,7 @@ Node000FA0[style = "filled,rounded", fillcolor = "#C8C8C8", label = "{{ <v>FICT 
 Node000FA0 -> Node000DF0[xlabel = "L"]
 Node000DF0[style = "filled,rounded", fillcolor = "#B1FF9F", label = "{{ <v>KEYWORD | WRITE } }"]
 Node000DF0 -> Node000DC0[xlabel = "L"]
-unknown} }"]
+Node000DC0[style = "filled,rounded", fillcolor = "#FF4646", label = "{{ <v>STR | Hello } }"]
 Node000FA0 -> Node000F70[xlabel = "R"]
 Node000F70[style = "filled,rounded", fillcolor = "#FFDC4B", label = "{{ <v>OPER | :=} }"]
 Node000F70 -> Node000E50[xlabel = "L"]
@@ -152,5 +152,5 @@ Node0010F0[style = "filled,rounded", fillcolor = "#87A7FF", label = "{{ <v>NUM |
 Node0011E0 -> Node001150[xlabel = "R"]
 Node001150[style = "filled,rounded", fillcolor = "#B1FF9F", label = "{{ <v>KEYWORD | WRITE } }"]
 Node001150 -> Node001120[xlabel = "L"]
-unknown} }"]
+Node001120[style = "filled,rounded", fillcolor = "#FF4646", label = "{{ <v>STR | world } }"]
 }
