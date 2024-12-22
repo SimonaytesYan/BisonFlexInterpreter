@@ -7,6 +7,8 @@
 
 %code top{
 #include "AST.hpp"
+#include "Logger.hpp"
+
 #include <string>
 }
 
@@ -73,18 +75,18 @@ start:
 ;
 
 expr:
-    CREATE_VAR get_var ";"           { std::cerr << "SYNTAX: create var \n"; 
+    CREATE_VAR get_var ";"           { log_out << "SYNTAX: create var \n"; 
                                        $$ = new Node(Keyword::VAR, $2, nullptr); }
 |
-    get_var EQ logical_op ";"        { std::cerr << "SYNTAX: var\n"; 
+    get_var EQ logical_op ";"        { log_out << "SYNTAX: var\n"; 
                                        $$ = new Node(Operator::EQUATE, $1, $3); }
 |
-    WRITELN "(" logical_op ")" ";"   { std::cerr << "SYNTAX: write \n"; 
+    WRITELN "(" logical_op ")" ";"   { log_out << "SYNTAX: write \n"; 
                                        $$ = new Node(Keyword::WRITE, $3, nullptr); }
 |
     WRITELN "(" str ")" ";"          { $$ = new Node(Keyword::WRITE, $3, nullptr); }
 |
-    READLN "(" get_var ")" ";"       { std::cerr << "SYNTAX: read \n"; 
+    READLN "(" get_var ")" ";"       { log_out << "SYNTAX: read \n"; 
                                        $$ = new Node(Keyword::READ, $3, nullptr); }
 |
     IF logical_op THEN "begin" expr "end" ELSE "begin" expr "end" ";" { 
@@ -152,20 +154,20 @@ compare_oper:
 ;
 
 add_sub:
-    add_sub ADD add_sub { std::cerr << "SYNTAX: add \n"; 
+    add_sub ADD add_sub { log_out << "SYNTAX: add \n"; 
                           $$ = new Node(Operator::ADD, $1, $3); }
 |
-    add_sub SUB add_sub { std::cerr << "SYNTAX: sub \n"; 
+    add_sub SUB add_sub { log_out << "SYNTAX: sub \n"; 
                           $$ = new Node(Operator::SUB, $1, $3); }
 |
     mul_div             { $$ = $1; }
 ;
 
 mul_div:
-    mul_div MUL mul_div { std::cerr << "SYNTAX: mul \n"; 
+    mul_div MUL mul_div { log_out << "SYNTAX: mul \n"; 
                           $$ = new Node(Operator::MUL, $1, $3); }
 |
-    mul_div DIV mul_div { std::cerr << "SYNTAX: div \n"; 
+    mul_div DIV mul_div { log_out << "SYNTAX: div \n"; 
                           $$ = new Node(Operator::DIV, $1, $3); }
 |
     value { $$ = $1; }
@@ -175,7 +177,7 @@ value:
     "(" expr ")" { $$ = $2; }
 |
     NUM     { std::string num = $1; 
-              std::cerr << "SYNTAX: NUM = " + num + "\n"; 
+              log_out << "SYNTAX: NUM = " + num + "\n"; 
               $$ = new Node(atoi(num.c_str()), nullptr, nullptr); }
 |
     get_var { $$ = $1; }
@@ -183,7 +185,7 @@ value:
 
 get_var:
     VAR { std::string var = $1; 
-          std::cerr << "SYNTAX: VAR = " + $1 + "\n"; 
+          log_out << "SYNTAX: VAR = " + $1 + "\n"; 
           $$ = new Node(var.c_str(), nullptr, nullptr); }
 ;
 

@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
     
     lexer = new yyFlexLexer(&input);
     yy::parser parser;
-    parser.set_debug_level(1);
+    // parser.set_debug_level(1);
     parser.parse();
     
     delete lexer;

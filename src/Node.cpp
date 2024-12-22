@@ -1,3 +1,4 @@
+#include "Logger.hpp"
 #include "Node.hpp"
 
 #include <cstring>

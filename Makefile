@@ -5,8 +5,8 @@ SRC = src
 BUILD = build
 BIN = bin
 
-FILES = $(BUILD)/Lexer.cpp $(BUILD)/Parser.cpp $(BUILD)/AST.cpp $(BUILD)/Node.cpp $(BUILD)/main.cpp
-HEADERS = $(BUILD)/AST.hpp $(BUILD)/Node.hpp
+FILES = $(BUILD)/Lexer.cpp $(BUILD)/Parser.cpp $(BUILD)/AST.cpp $(BUILD)/Node.cpp $(BUILD)/main.cpp 
+HEADERS = $(BUILD)/AST.hpp $(BUILD)/Node.hpp $(BUILD)/Logger.hpp
 
 $(BIN)/test: $(FILES) $(HEADERS)
 	$(CC) $(CFLAGS) $(FILES) -o $(BIN)/test
@@ -17,7 +17,7 @@ $(BUILD)/Lexer.cpp: $(SRC)/Lexer.l make_dir
 	mv Lexer.hpp $(BUILD) 
 
 $(BUILD)/Parser.cpp: $(SRC)/Parser.y $(BUILD)/Lexer.cpp make_dir
-	bison -t $(SRC)/Parser.y
+	bison $(SRC)/Parser.y
 	mv location.hh $(BUILD)
 	mv position.hh $(BUILD)
 	mv stack.hh $(BUILD)
