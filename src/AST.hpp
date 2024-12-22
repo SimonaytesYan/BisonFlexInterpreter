@@ -36,6 +36,7 @@ private:
     int  ExecuteNode    (const Node* node);
     int  ExecuteKeyword (const Node* node);
     void ExecuteIf      (const Node* node);
+    void ExecuteWhile   (const Node* node);
     int  GetVarValue    (const std::string& var_name);
     void RecDelete      (Node* node);
 

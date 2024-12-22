@@ -21,6 +21,8 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token IF
 %token THEN
 %token ELSE
+%token WHILE
+%token DO
 %token BEGIN_SCOPE "begin"
 %token END_SCOPE   "end"
 
@@ -85,7 +87,12 @@ expr:
                                        Node* branches = new Node($5, $9);
                                        $$ = new Node(Keyword::IF, statement, branches); }
 |
-    expr expr                        { $$ = new Node($1, $2); }
+    WHILE logical_op DO "begin" expr "end" ";" { 
+                                       Node* statement  = $2;
+                                       Node* cycle_body = $5;
+                                       $$ = new Node(Keyword::WHILE, statement, cycle_body); }
+|
+    expr expr                            { $$ = new Node($1, $2); }
 ;
 
 logical_op:

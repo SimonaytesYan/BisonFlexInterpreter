@@ -125,6 +125,12 @@ void AST::ExecuteIf(const Node* node) {
     }
 }
 
+void AST::ExecuteWhile(const Node* node) {
+    while (ExecuteNode(node->left_)) {
+        ExecuteNode(node->right_);
+    }    
+}
+
 int AST::ExecuteKeyword(const Node* node) {
     switch (node->val_.keyword)
     {
@@ -160,7 +166,11 @@ int AST::ExecuteKeyword(const Node* node) {
 
         case Keyword::IF: {
             ExecuteIf(node);
+            return 0;
+        }
 
+        case Keyword::WHILE: {
+            ExecuteWhile(node);
             return 0;
         }
 

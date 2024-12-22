@@ -21,6 +21,8 @@ using namespace yy;
 "if"                    { std::cerr << "LEXER: keyword if!\n";    return parser::token::IF;}
 "then"                  { std::cerr << "LEXER: keyword then!\n";  return parser::token::THEN;}
 "else"                  { std::cerr << "LEXER: keyword if!\n";    return parser::token::ELSE;}
+"while"                 { std::cerr << "LEXER: keyword while!\n"; return parser::token::WHILE;}
+"do"                    { std::cerr << "LEXER: keyword do!\n";    return parser::token::DO;}
 
 "+"                     { std::cerr << "LEXER: +\n";              return parser::token::ADD; }
 "-"                     { std::cerr << "LEXER: -\n";              return parser::token::SUB; }

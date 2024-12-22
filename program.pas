@@ -9,8 +9,6 @@ begin
 
     c := a + b * b;
 
-    write(c * c + 1);
-
     write(10 <= c and c <= 100);
     write(10 <= c or c <= 100);
     write(not c);
@@ -23,5 +21,11 @@ begin
       begin
         write(11);
       end;
+
+    while c < 10 do
+    begin
+        write(42);
+        c := c + 1;
+    end;
 
 end.
