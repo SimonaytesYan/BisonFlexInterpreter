@@ -71,11 +71,22 @@ int AST::ExecuteOperator(const Node* node) {
         BINARY_OPER_EXEC(MUL, *);
         BINARY_OPER_EXEC(DIV, /);
 
-        BINARY_OPER_EXEC(IS_EQ, ==);
-        BINARY_OPER_EXEC(IS_GE, >=);
-        BINARY_OPER_EXEC(IS_LE, <=);
-        BINARY_OPER_EXEC(IS_G,  >);
-        BINARY_OPER_EXEC(IS_L,  <);
+        BINARY_OPER_EXEC(IS_EQ,     ==);
+        BINARY_OPER_EXEC(IS_NOT_EQ, !=);
+        BINARY_OPER_EXEC(IS_GE,     >=);
+        BINARY_OPER_EXEC(IS_LE,     <=);
+        BINARY_OPER_EXEC(IS_G,      >);
+        BINARY_OPER_EXEC(IS_L,      <);
+        BINARY_OPER_EXEC(AND,       &&);
+        BINARY_OPER_EXEC(OR,        ||);
+
+        case Operator::NOT: {
+            std::cerr << "INTERPRETER: NOT \n";
+            int res = !ExecuteNode(node->left_);
+            std::cerr << "INTERPRETER: NOT res = " << res << "\n";
+
+            return res;
+        }
 
         case Operator::EQUATE: {
             std::cerr << "INTERPRETER: =\n";
@@ -232,6 +243,15 @@ void fprintOper(const Node* node, FILE* fp) {
             break;
         case Operator::IS_NOT_EQ:
             fprintf(fp, "\\<\\>");
+            break;
+        case Operator::AND:
+            fprintf(fp, "and");
+            break;
+        case Operator::OR:
+            fprintf(fp, "or");
+            break;
+        case Operator::NOT:
+            fprintf(fp, "not");
             break;
         default:
             fprintf(fp, "#");

@@ -25,6 +25,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token SUB
 %token MUL
 %token DIV
+
 %token IS_EQ
 %token IS_NOT_EQ
 %token IS_GE
@@ -32,6 +33,10 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token IS_G
 %token IS_L
 %token EQ
+
+%token AND
+%token OR
+%token NOT
 
 %token LBRACKET  "("
 %token RBRACKET  ")"
@@ -44,8 +49,9 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token EMPTY
 
 %type <Node*> expr
-%type <Node*> add_sub
+%type <Node*> logical_op
 %type <Node*> compare_oper
+%type <Node*> add_sub
 %type <Node*> mul_div
 %type <Node*> value
 %type <Node*> get_var
@@ -60,16 +66,26 @@ expr:
     CREATE_VAR get_var ";"           { std::cerr << "SYNTAX: create var \n"; 
                                        $$ = new Node(Keyword::VAR, $2, nullptr); }
 |
-    get_var EQ compare_oper ";"      { std::cerr << "SYNTAX: var\n"; 
+    get_var EQ logical_op ";"        { std::cerr << "SYNTAX: var\n"; 
                                        $$ = new Node(Operator::EQUATE, $1, $3); }
 |
-    WRITELN "(" compare_oper ")" ";" { std::cerr << "SYNTAX: write \n"; 
+    WRITELN "(" logical_op ")" ";"   { std::cerr << "SYNTAX: write \n"; 
                                        $$ = new Node(Keyword::WRITE, $3, nullptr); }
 |
     READLN "(" get_var ")" ";"       { std::cerr << "SYNTAX: read \n"; 
                                        $$ = new Node(Keyword::READ, $3, nullptr); }
 |
     expr expr                        { $$ = new Node($1, $2); }
+;
+
+logical_op:
+    logical_op AND logical_op { $$ = new Node(Operator::AND, $1, $3); }
+|
+    logical_op OR  logical_op { $$ = new Node(Operator::OR,  $1, $3); }
+|
+    NOT logical_op            { $$ = new Node(Operator::NOT, $2, nullptr); }
+|
+    compare_oper              { $$ = $1; }
 ;
 
 compare_oper:

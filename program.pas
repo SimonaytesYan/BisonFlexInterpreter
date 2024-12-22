@@ -11,10 +11,8 @@ begin
 
     write(c * c + 1);
 
-    write(c = 26);
-    write(c >= 25);
-    write(c <= 27);
-    write(c < 26);
-    write(c > 26);
+    write(10 <= c and c <= 100);
+    write(10 <= c or c <= 100);
+    write(not c);
 
 end.

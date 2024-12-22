@@ -13,7 +13,10 @@ enum class Operator {
     IS_GE,
     IS_LE,
     IS_G,
-    IS_L
+    IS_L,
+    AND,
+    OR,
+    NOT
 };
 
 enum class Keyword {

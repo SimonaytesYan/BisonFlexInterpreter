@@ -42,6 +42,10 @@ using namespace yy;
 "<"                     { std::cerr << "LEXER: <\n";              return parser::token::IS_L; }
 ":="                    { std::cerr << "LEXER: =\n";              return parser::token::EQ; }
 
+"and"                   { std::cerr << "LEXER: and\n";            return parser::token::AND; }
+"or"                    { std::cerr << "LEXER: or\n";             return parser::token::OR; }
+"not"                   { std::cerr << "LEXER: not\n";            return parser::token::NOT; }
+
 "("                     { std::cerr << "LEXER: (\n";              return parser::token::LBRACKET; }
 ")"                     { std::cerr << "LEXER: )\n";              return parser::token::RBRACKET; }
 ";"                     { std::cerr << "LEXER: ;\n";              return parser::token::SEMICOLON; }
