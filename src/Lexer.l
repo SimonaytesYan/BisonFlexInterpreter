@@ -9,17 +9,6 @@
 
 using namespace yy;
 
-// [a-zA-Z][a-zA-Z0-9]* { sscanf(yytext, "%s", &yylval->value); return VAR; }
-// [0-9]+               { std::cerr << "LEXER: number!\n"; return parser::token::NUM; }
-// "+"                  { std::cerr << "LEXER: +\n"; return parser::token::ADD; }
-// "-"                  { std::cerr << "LEXER: -\n"; return parser::token::SUB; }
-// "*"                  { std::cerr << "LEXER: *\n"; return parser::token::MUL; }
-// "/"                  { std::cerr << "LEXER: /\n"; return parser::token::DIV; }
-// "("                  { std::cerr << "LEXER: (\n"; return parser::token::LBRACKET; }
-// ")"                  { std::cerr << "LEXER: )\n"; return parser::token::RBRACKET; }
-// [ \r\n\t]*           { std::cerr << "LEXER: space symbol\n"; return 0; } // Nothing
-// .                    { std::cerr << "HUHUHoisdfiwdvpieh voisevopiesv-0iesvpvi\n" << lineno() << ": Unexpected character: '" << YYText() << "'." << std::endl; exit(1); }
-// .                    { std::cerr << "HUHUHoisdfiwdvpieh voisevopiesv-0iesvpvi\n" << std::endl; exit(1); }
 %}
 
 
@@ -29,6 +18,9 @@ using namespace yy;
 "read"                  { std::cerr << "LEXER: keyword read!\n";  return parser::token::READLN;}
 "begin"                 { std::cerr << "LEXER: keyword begin!\n"; return parser::token::BEGIN_SCOPE;}
 "end"                   { std::cerr << "LEXER: keyword end!\n";   return parser::token::END_SCOPE;}
+"if"                    { std::cerr << "LEXER: keyword if!\n";    return parser::token::IF;}
+"then"                  { std::cerr << "LEXER: keyword then!\n";  return parser::token::THEN;}
+"else"                  { std::cerr << "LEXER: keyword if!\n";    return parser::token::ELSE;}
 
 "+"                     { std::cerr << "LEXER: +\n";              return parser::token::ADD; }
 "-"                     { std::cerr << "LEXER: -\n";              return parser::token::SUB; }

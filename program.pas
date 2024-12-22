@@ -15,4 +15,13 @@ begin
     write(10 <= c or c <= 100);
     write(not c);
 
+    if c < 10 then
+      begin
+        write(9);
+      end
+    else
+      begin
+        write(11);
+      end;
+
 end.

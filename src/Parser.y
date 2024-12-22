@@ -18,6 +18,9 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token CREATE_VAR
 %token WRITELN
 %token READLN
+%token IF
+%token THEN
+%token ELSE
 %token BEGIN_SCOPE "begin"
 %token END_SCOPE   "end"
 
@@ -74,6 +77,13 @@ expr:
 |
     READLN "(" get_var ")" ";"       { std::cerr << "SYNTAX: read \n"; 
                                        $$ = new Node(Keyword::READ, $3, nullptr); }
+|
+    IF logical_op THEN "begin" expr "end" ELSE "begin" expr "end" ";" { 
+                                       Node* statement    = $2;
+                                       Node* true_branch  = $5;
+                                       Node* false_branch = $9;
+                                       Node* branches = new Node($5, $9);
+                                       $$ = new Node(Keyword::IF, statement, branches); }
 |
     expr expr                        { $$ = new Node($1, $2); }
 ;

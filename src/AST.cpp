@@ -111,6 +111,20 @@ int AST::ExecuteOperator(const Node* node) {
     }
 }
 
+void AST::ExecuteIf(const Node* node) {
+    bool statement = ExecuteNode(node->left_);
+
+    Node* true_branch  = node->right_->left_;
+    Node* false_branch = node->right_->right_;
+
+    if (statement) {
+        ExecuteNode(true_branch);
+    }
+    else {
+        ExecuteNode(false_branch);
+    }
+}
+
 int AST::ExecuteKeyword(const Node* node) {
     switch (node->val_.keyword)
     {
@@ -140,6 +154,12 @@ int AST::ExecuteKeyword(const Node* node) {
                 std::cerr << "variable <" + var_name + "> do not exist\n";
                 throw -1;
             }
+
+            return 0;
+        }
+
+        case Keyword::IF: {
+            ExecuteIf(node);
 
             return 0;
         }
