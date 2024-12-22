@@ -11,7 +11,6 @@ using namespace yy;
 
 %}
 
-
 %%
 "var"                   { std::cerr << "LEXER: keyword var!\n";   return parser::token::CREATE_VAR; }
 "write"                 { std::cerr << "LEXER: keyword write!\n"; return parser::token::WRITELN;}
@@ -23,6 +22,8 @@ using namespace yy;
 "else"                  { std::cerr << "LEXER: keyword if!\n";    return parser::token::ELSE;}
 "while"                 { std::cerr << "LEXER: keyword while!\n"; return parser::token::WHILE;}
 "do"                    { std::cerr << "LEXER: keyword do!\n";    return parser::token::DO;}
+"for"                   { std::cerr << "LEXER: keyword for!\n";   return parser::token::FOR;}
+"to"                    { std::cerr << "LEXER: keyword to!\n";    return parser::token::TO;}
 
 "+"                     { std::cerr << "LEXER: +\n";              return parser::token::ADD; }
 "-"                     { std::cerr << "LEXER: -\n";              return parser::token::SUB; }

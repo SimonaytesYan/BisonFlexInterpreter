@@ -25,11 +25,7 @@ enum class Keyword {
     WRITE,
     PROGRAM,
     IF,
-    THEN,
-    ELSE,
     FOR,
-    TO,
-    DO,
     WHILE
 };
 

@@ -23,6 +23,8 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token ELSE
 %token WHILE
 %token DO
+%token FOR
+%token TO
 %token BEGIN_SCOPE "begin"
 %token END_SCOPE   "end"
 
@@ -92,7 +94,18 @@ expr:
                                        Node* cycle_body = $5;
                                        $$ = new Node(Keyword::WHILE, statement, cycle_body); }
 |
-    expr expr                            { $$ = new Node($1, $2); }
+    FOR get_var EQ logical_op TO logical_op DO "begin" expr "end" ";" { 
+                                       Node* counter    = $2;
+                                       Node* start_val  = $4;
+                                       Node* finish_val = $6;
+                                       Node* cycle_body = $9;
+
+                                       Node* start_finish = new Node(start_val, finish_val);
+                                       Node* statement = new Node(counter, start_finish);
+
+                                       $$ = new Node(Keyword::FOR, statement, cycle_body); }
+|
+    expr expr                        { $$ = new Node($1, $2); }
 ;
 
 logical_op:

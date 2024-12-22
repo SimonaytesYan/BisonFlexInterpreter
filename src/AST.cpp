@@ -131,6 +131,34 @@ void AST::ExecuteWhile(const Node* node) {
     }    
 }
 
+void AST::ExecuteFor(const Node* node) {
+
+    int start_val  = ExecuteNode(node->left_->right_->left_);
+    int finish_val = ExecuteNode(node->left_->right_->right_);
+
+    Node* counter = node->left_->left_;
+    const std::string& var_name = counter->val_.var;
+
+    std::cerr << "start_val  = " << start_val << "\n";
+    std::cerr << "finish_val = " << finish_val << "\n";
+    std::cerr << "counter    = " << var_name << "\n";
+
+    if (vars_.count(var_name) == 0) {
+        vars_[var_name] = start_val;
+    }
+    else {
+        std::cerr << "ERROR DURING EXECUTION\n"; 
+        std::cerr << "variable <" + var_name + "> do not exist\n";
+
+        throw -1;
+    }
+
+    while(vars_[var_name] < finish_val) {
+        ExecuteNode(node->right_);
+        vars_[var_name]++;
+    }
+}
+
 int AST::ExecuteKeyword(const Node* node) {
     switch (node->val_.keyword)
     {
@@ -171,6 +199,12 @@ int AST::ExecuteKeyword(const Node* node) {
 
         case Keyword::WHILE: {
             ExecuteWhile(node);
+            return 0;
+        }
+
+        case Keyword::FOR: {
+            std::cerr << "INTERPRETER: Execute for\n";
+            ExecuteFor(node);
             return 0;
         }
 
