@@ -30,22 +30,14 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %token BEGIN_SCOPE "begin"
 %token END_SCOPE   "end"
 
-%token ADD
-%token SUB
-%token MUL
-%token DIV
+%left EQ IS_EQ IS_NOT_EQ IS_GE IS_LE IS_G IS_L
 
-%token IS_EQ
-%token IS_NOT_EQ
-%token IS_GE
-%token IS_LE
-%token IS_G
-%token IS_L
-%token EQ
+%left OR
+%left AND
+%left NOT
 
-%token AND
-%token OR
-%token NOT
+%left ADD SUB
+%left MUL DIV 
 
 %token LBRACKET  "("
 %token RBRACKET  ")"

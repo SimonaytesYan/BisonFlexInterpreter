@@ -32,3 +32,4 @@ Syntax analysis made with Bison(grammar implement in file Parser.y)
 * Update documentation
 * Fix shift/reduce conflicts
 * Add LLVM ir generation from AST
+* Unar minus

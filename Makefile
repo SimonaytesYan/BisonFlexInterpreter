@@ -19,7 +19,7 @@ $(BUILD)/Lexer.cpp: $(SRC)/Lexer.l make_dir
 
 # Bison flag to generate shift/reduce conflicts examples -Wcounterexamples
 $(BUILD)/Parser.cpp: $(SRC)/Parser.y $(BUILD)/Lexer.cpp make_dir
-	bison $(SRC)/Parser.y
+	bison $(SRC)/Parser.y -Wcounterexamples
 	mv location.hh $(BUILD)
 	mv position.hh $(BUILD)
 	mv stack.hh $(BUILD)
