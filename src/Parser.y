@@ -58,6 +58,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 
 %token EMPTY
 
+%type <Node*> expr_list
 %type <Node*> expr
 %type <Node*> logical_op
 %type <Node*> compare_oper
@@ -71,8 +72,13 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %%
 
 start: 
-   "begin" expr "end" "." { AST ast($2); ast.graphicDump(); ast.run(); }
+   "begin" expr_list "end" "." { AST ast($2); ast.graphicDump(); ast.run(); }
 ;
+
+expr_list:
+    expr    { $$ = $1; }
+|
+    expr expr_list  { $$ = new Node($1, $2); }
 
 expr:
     CREATE_VAR get_var ";"           { log_out << "SYNTAX: create var \n"; 
@@ -89,19 +95,19 @@ expr:
     READLN "(" get_var ")" ";"       { log_out << "SYNTAX: read \n"; 
                                        $$ = new Node(Keyword::READ, $3, nullptr); }
 |
-    IF logical_op THEN "begin" expr "end" ELSE "begin" expr "end" ";" { 
+    IF logical_op THEN "begin" expr_list "end" ELSE "begin" expr_list "end" ";" { 
                                        Node* statement    = $2;
                                        Node* true_branch  = $5;
                                        Node* false_branch = $9;
                                        Node* branches = new Node($5, $9);
                                        $$ = new Node(Keyword::IF, statement, branches); }
 |
-    WHILE logical_op DO "begin" expr "end" ";" { 
+    WHILE logical_op DO "begin" expr_list "end" ";" { 
                                        Node* statement  = $2;
                                        Node* cycle_body = $5;
                                        $$ = new Node(Keyword::WHILE, statement, cycle_body); }
 |
-    FOR get_var EQ logical_op TO logical_op DO "begin" expr "end" ";" { 
+    FOR get_var EQ logical_op TO logical_op DO "begin" expr_list "end" ";" { 
                                        Node* counter    = $2;
                                        Node* start_val  = $4;
                                        Node* finish_val = $6;
@@ -111,8 +117,6 @@ expr:
                                        Node* statement = new Node(counter, start_finish);
 
                                        $$ = new Node(Keyword::FOR, statement, cycle_body); }
-|
-    expr expr                        { $$ = new Node($1, $2); }
 ;
 
 str:
