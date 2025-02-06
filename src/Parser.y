@@ -59,6 +59,7 @@ int yylex(yy::parser::semantic_type* yylval, yy::parser::location_type* yylloc);
 %type <Node*> value
 %type <Node*> get_var
 %type <Node*> str
+%type <std::string> char
 %type <std::string> characters
 
 %%
@@ -116,8 +117,12 @@ str:
 ;
 
 characters:
-    characters characters { $$ = $1 + $2; }
+    char { $$ = $1; }
 |
+    characters char { $$ = $1 + $2; }
+;
+
+char:
     VAR                   { $$ = std::string($1); }
 |
     NUM                   { $$ = std::string($1); }
