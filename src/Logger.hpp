@@ -8,13 +8,11 @@
     #include <ostream>
     #include <sstream>
 
+    // Creating empty buffer
     class MyBuf : public std::stringbuf
     {
-    public:
-        virtual int sync() {
-            // add this->str() to database here
-            // (optionally clear buffer afterwards)
-        }
+        public:
+            virtual int sync() { return 0; }
     };
     static MyBuf buffer;
 
